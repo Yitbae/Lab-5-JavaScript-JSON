@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Tree Order Form</title>
+
+  <style>
+      
+      input, select {
+          width: 100%;
+          padding: 5px;
+          margin: 5px 5px 5px 0px;
+          box-sizing: border-box;
+      }
+
+      input.error, select.error {
+        border: 2px red solid;
+      }
+
+  </style>
+
+</head>
+<body>
+
+    <h1>Minnesota Tree Order Form</h1>
+
+    <p>Enter information to order your tree. All fields are required.</p>
+
+    <h2>Order Information</h2>
+
+    <label for="homeowner-name">Homeowner Name</label><input id="homeowner-name" name="homeowner-name">
+    <br>
+    <label for="homeowner-house-number">House Number</label><input id="homeowner-house-number" name="homeowner-house-number">
+    <br>
+    <label for="homeowner-street-name">Street Name</label><input id="homeowner-street-name" name="homeowner-street-name">
+    <br>
+    <label for="city">City</label><input id="city" name="city"> 
+    <br>
+    <!-- All orders must be for Minnesota, so this input is not editable -->
+    <label for="state">State</label><input id="state" name="state" value="Minnesota" disabled> 
+    <br>
+    <label for="zipcode">Zip Code</label><input id="zipcode" name="zipcode">
+    <br>
+
+    <label for="tree-type">Tree Type</label>
+    <select id="tree-type">
+        <!-- Unselectable message shown. Since this will be required, it forces the user to actually pick a tree, not just click submit for the default first option -->
+        <option disabled selected value=""> Select a tree </option>  
+        <!-- The options that the user will be allowed to select, or choose from -->
+        <option name="tree-type">Cedar</option>
+        <option name="tree-type">Maple</option>
+        <option name="tree-type">Oak</option>
+    </select>
+    <br>
+
+    <button id="submit-order">Submit Order</button>    
+
+    <h2>Order Summary</h2>
+
+    <p id="order-summary">
+        <!-- TODO Use JavaScript to display the order information, 
+            only if all the required information is entered  -->
+    </p>
+    
+
+
+<script>
+
+    let homeownerNameInput = document.querySelector('#homeowner-name')
+    let homeownerHouseNumberInput = document.querySelector('#homeowner-house-number')
+    let homeownerStreetNameInput = document.querySelector('#homeowner-street-name')
+    let treeTypeSelect = document.querySelector('#tree-type')
+
+
+    // TODO create a variable for city input element
+    // TODO create a variable for zip code input element
+    let cityInput = document.querySelector('#city') // created a variable to hold city input
+    let zipcodeInput = document.querySelector('#zipcode') // created a variable to hold zipcode input
+
+    let submitButton = document.querySelector('#submit-order')
+
+    let orderSummaryParagraph = document.querySelector('#order-summary')
+
+    
+    submitButton.addEventListener('click', function() {
+    // here I have created variables that matches the event liseners to get and vaildate the values from inputs
+    let name = homeownerNameInput.value 
+    let houseNumber = homeownerHouseNumberInput.value
+    let streetName = homeownerStreetNameInput.value
+    let city = cityInput.value
+    let zipcode = zipcodeInput.value
+    let treeType = treeTypeSelect.value
+
+    // I have to create a varibale to hold a boolean true value for validation
+    let isValid = true; 
+    // now I will create a regualr expression to make user input is a 5 digit combination of numbers
+    let zipcodeRegEx = new RegExp('^[0-9]{5}$'); 
+
+    /* Below I used if else statement, logical operators and boolean to check if vealues are empty or not and if values are in range of the acceptable value
+     if vaule is empty or not acceptable there will be an error, when the vaule is entered and corrected the error will be removed*/
+     let errorMessages = [];
+
+    if (!name) {
+        isValid = false;
+        homeownerNameInput.classList.add("error");
+        errorMessages.push("Please enter a valid name.");
+    } else {
+        homeownerNameInput.classList.remove("error");
+    }
+    if (!houseNumber) {
+        isValid = false;
+        homeownerHouseNumberInput.classList.add("error");
+        errorMessages.push("Please enter a valid house number.");
+    } else {
+        homeownerHouseNumberInput.classList.remove("error");
+    }
+    if (!streetName) {
+        isValid = false;
+        homeownerStreetNameInput.classList.add("error");
+        errorMessages.push("Please enter a valid street name.");
+    } else {
+        homeownerStreetNameInput.classList.remove("error");
+    }
+    if (!city) {
+        isValid = false;
+        cityInput.classList.add("error");
+        errorMessages.push("Please enter a valid city name.");
+    } else {
+        cityInput.classList.remove("error");
+    }
+    if (!zipcodeRegEx.test(zipcode) || zipcode < 55001 || zipcode > 56763) {
+        isValid = false;
+        zipcodeInput.classList.add("error");
+        errorMessages.push("Please enter a valid zipcode.");
+    } else {
+        zipcodeInput.classList.remove("error");
+    }
+    if (!treeType) {
+        isValid = false;
+        treeTypeSelect.classList.add("error");
+        errorMessages.push("Please select a tree type.");
+    } else {
+        treeTypeSelect.classList.remove("error");
+    }
+    if (!isValid) {
+    alert(errorMessages.join("\n"));
+    }
+
+
+
+    //if all the values are corretly entered the vaules will be printed under order summary
+    if (isValid) {
+        orderSummaryParagraph.innerHTML = "Order Summary: " +
+        "<br>Homeowner Name: " + name + 
+        "<br>House Number: " + houseNumber + 
+        "<br>Street Name: " + streetName + 
+        "<br>City: " + city + 
+        "<br>Zip Code: " + zipcode + 
+        "<br>Tree Type: " + treeType;
+    }
+    });
+
+</script>
+
+</body>
+</html>
